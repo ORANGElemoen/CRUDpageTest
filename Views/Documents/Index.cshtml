@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CRUDpageTest.Models.Document>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Documents";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Dropdown menu form for filtering documents by author, auto-submit on change -->
+<form asp-action="Index" method="get" id="filterForm">
+    <div class="form-group">
+        <label for="filter">Filter by Author:</label>
+        <select id="filter" name="filter" class="form-control" asp-items="ViewBag.Authors" onchange="handleFilterChange()">
+            <option value="All"></option>
+        </select>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Document</a>
+</p>
+
+<!-- Add "Back to List" link with onclick event -->
+<p>
+    <a href="#" onclick="backToList()">Back to List</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Author)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Author)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No documents available.</p>
+}
+
+@section Scripts {
+    <script>
+        function handleFilterChange() {
+            
+            var filterValue = document.getElementById('filter').value;
+            if (filterValue == "All") {
+                debugger
+               window.location.href = "https://localhost:44316/Documents";
+            } else {
+                document.getElementById('filterForm').submit();
+            }
+        }
+
+        function backToList() {
+            window.location.href = "https://localhost:44316/Documents";
+        }
+    </script>
+}
