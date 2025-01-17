@@ -182,6 +182,7 @@ namespace CRUDpageTest.Controllers
             return File(document.FileData, "application/octet-stream", document.FileName);
         }
 
+        public IActionResult Home() { return View(); }
 
         private bool DocumentExists(int id)
         {
